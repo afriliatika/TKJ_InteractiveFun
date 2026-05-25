@@ -3,53 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pilih Level Kuis</title>
+    <title>Pilih Level - NET-LEARN</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+
+        body {
+            margin: 0;
+            background-color: #e0f2fe; /* Biru sangat muda */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+        }
+
         .phone-screen {
             width: 360px;
             height: 740px;
-            border: 12px solid #000;
-            border-radius: 45px;
-            margin: 20px auto;
-            background-color: #e0f2fe;
+            border: 8px solid #334155;
+            border-radius: 40px;
+            background-color: #ffffff;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            font-family: 'Poppins', sans-serif;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 119, 182, 0.2);
         }
+
         .header {
             background-color: #0077b6;
-            padding: 25px;
-            color: white;
+            padding: 40px 20px 20px;
             text-align: center;
-            display: flex;
-            align-items: center;
+            color: white;
+            position: relative;
         }
-        .header a { color: white; text-decoration: none; position: absolute; }
-        .header h3 { margin: 0; width: 100%; font-size: 1.2rem; }
+        .header a { color: white; position: absolute; left: 20px; top: 43px; font-size: 1.2rem; }
+        .header h3 { margin: 0; font-size: 1.1rem; letter-spacing: 1px; }
 
-        .content {
-            padding: 30px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
+        .content { padding: 30px 20px; flex-grow: 1; }
+
+        .instruction {
+            color: #64748b;
+            text-align: center;
+            font-size: 0.8rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-transform: uppercase;
         }
+
         .level-card {
-            width: 100%;
             background: white;
-            padding: 20px;
+            border: 2px solid #e2e8f0;
             border-radius: 20px;
+            padding: 18px;
             display: flex;
             align-items: center;
             text-decoration: none;
-            color: #1e293b;
-            border: 2px solid transparent;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+            transition: all 0.2s ease;
         }
-        .level-card:hover { border-color: #0077b6; transform: translateY(-3px); }
+        .level-card:hover {
+            border-color: #00b4d8;
+            background-color: #f0f9ff;
+            transform: scale(1.02);
+        }
+
         .icon-box {
             width: 50px;
             height: 50px;
@@ -57,40 +76,38 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.3rem;
             margin-right: 15px;
-            color: white;
-            font-size: 1.2rem;
         }
-        .lvl-1 { background: #38b6ff; }
-        .lvl-2 { background: #9333ea; }
-        
-        .level-info h4 { margin: 0; font-size: 1rem; }
-        .level-info p { margin: 0; font-size: 0.75rem; color: #64748b; }
+
+        /* Warna Ikon per Level */
+        .lvl-1 .icon-box { background: #e0f2fe; color: #0077b6; }
+        .lvl-2 .icon-box { background: #f3e8ff; color: #7e22ce; }
+        .lvl-3 .icon-box { background: #fef3c7; color: #d97706; }
+
+        .info-text h4 { margin: 0; color: #1e293b; font-size: 1rem; }
+        .info-text p { margin: 2px 0 0; color: #64748b; font-size: 0.75rem; }
     </style>
 </head>
 <body>
     <div class="phone-screen">
         <div class="header">
-            <a href="index.html"><i class="fas fa-chevron-left"></i></a>
-            <h3>Pilih Level</h3>
+            <a href="index.html"><i class="fas fa-arrow-left"></i></a>
+            <h3>PILIH TINGKAT KESULITAN</h3>
         </div>
         <div class="content">
-            <p style="text-align: center; color: #475569; font-size: 0.9rem;">Pilih tingkat kesulitan kuis kamu:</p>
-            
-            <a href="kuis.html?level=1" class="level-card">
-                <div class="icon-box lvl-1"><i class="fas fa-star"></i></div>
-                <div class="level-info">
-                    <h4>Level 1 (Dasar)</h4>
-                    <p>5 Soal • Materi Dasar Jaringan</p>
-                </div>
+            <p class="instruction">Daftar Misi</p>
+            <a href="kuis.html?level=1" class="level-card lvl-1">
+                <div class="icon-box"><i class="fas fa-laptop"></i></div>
+                <div class="info-text"><h4>LEVEL 01</h4><p>Dasar Komputer & Hardware</p></div>
             </a>
-
-            <a href="kuis.html?level=2" class="level-card">
-                <div class="icon-box lvl-2"><i class="fas fa-bolt"></i></div>
-                <div class="level-info">
-                    <h4>Level 2 (Lanjut)</h4>
-                    <p>10 Soal • Perangkat & Subnetting</p>
-                </div>
+            <a href="kuis.html?level=2" class="level-card lvl-2">
+                <div class="icon-box"><i class="fas fa-network-wired"></i></div>
+                <div class="info-text"><h4>LEVEL 02</h4><p>Jaringan LAN & Kabel</p></div>
+            </a>
+            <a href="kuis.html?level=3" class="level-card lvl-3">
+                <div class="icon-box"><i class="fas fa-server"></i></div>
+                <div class="info-text"><h4>LEVEL 03</h4><p>Server & Administrasi Jaringan</p></div>
             </a>
         </div>
     </div>

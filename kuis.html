@@ -3,181 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuis TKJ</title>
+    <title>Kuis TKJ - NET-LEARN</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        body {
+            margin: 0; background-color: #e0f2fe;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; font-family: 'Poppins', sans-serif;
+        }
+
         .phone-screen {
-            width: 360px; height: 740px; border: 12px solid #000; border-radius: 45px;
-            margin: 20px auto; background-color: #e0f2fe; display: flex; flex-direction: column;
-            overflow: hidden; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-            font-family: 'Arial', sans-serif;
+            width: 360px; height: 740px; border: 8px solid #334155;
+            border-radius: 40px; background-color: #ffffff;
+            display: flex; flex-direction: column; overflow: hidden; position: relative;
         }
 
-        .header { background-color: #0077b6; padding: 18px; text-align: center; color: white; }
+        /* HEADER */
+        .header { background-color: #0077b6; padding: 40px 20px 20px; text-align: center; color: white; }
+        .header h3 { margin: 0; font-size: 1rem; }
+
+        .content { padding: 25px 20px; flex-grow: 1; }
+        .progress { color: #0077b6; font-weight: 700; font-size: 0.8rem; margin-bottom: 10px; }
+        .question { color: #1e293b; font-size: 1.1rem; font-weight: 600; margin-bottom: 30px; min-height: 80px; }
+
+        /* BUTTONS PILIHAN JAWABAN */
+        .options-container { display: flex; flex-direction: column; gap: 12px; }
+        .option-btn {
+            background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 15px;
+            padding: 15px; text-align: left; font-family: 'Poppins'; font-size: 0.9rem;
+            cursor: pointer; transition: 0.2s; color: #334155;
+        }
+        .option-btn:active { background: #e0f2fe; }
+
+        /* FEEDBACK OVERLAY (BENAR/SALAH) */
+        #feedback-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 10; padding: 30px; text-align: center; box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        .feedback-card {
+            background: white; border-radius: 30px; padding: 35px 20px;
+            width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        .feedback-icon { font-size: 4rem; margin-bottom: 15px; }
+        .feedback-status { font-size: 1.5rem; font-weight: 800; margin-bottom: 10px; }
+        .correct-info { color: #64748b; font-size: 0.9rem; margin-bottom: 25px; min-height: 40px; }
         
-        #main-content { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
-
-        /* Kartu Jawaban */
-        .option-card {
-            background: white; border-radius: 15px; padding: 18px 20px;
-            margin-bottom: 12px; font-weight: bold; color: #1e293b;
-            border: 2px solid transparent; cursor: pointer; transition: 0.3s;
+        /* TOMBOL UTAMA LANJUT */
+        .next-btn {
+            background: #1e293b; color: white; border: none; padding: 14px 40px;
+            border-radius: 20px; font-weight: 600; cursor: pointer; width: 100%;
+            font-family: 'Poppins'; margin-bottom: 12px; font-size: 0.95rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: 0.2s;
         }
-        .option-card:active { transform: scale(0.95); }
+        .next-btn:active { transform: scale(0.98); }
 
-        /* Tombol Biru Friendly */
-        .btn-blue {
-            background-color: #38b6ff; color: white; border: none; padding: 15px;
-            border-radius: 15px; font-weight: bold; width: 100%; font-size: 1rem;
-            cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;
+        /* TOMBOL KEMBALI BERBENTUK BUTTON (Sesuai Request Tika) */
+        .back-overlay-btn {
+            background: #ffffff; color: #64748b; 
+            border: 2px solid #cbd5e1; padding: 12px 40px;
+            border-radius: 20px; font-weight: 600; cursor: pointer; width: 100%;
+            font-family: 'Poppins'; font-size: 0.9rem; text-decoration: none;
+            display: block; box-sizing: border-box; transition: 0.2s;
         }
-        .btn-blue:hover { background-color: #0096f1; }
+        .back-overlay-btn:active {
+            background: #f1f5f9;
+            transform: scale(0.98);
+        }
 
-        /* Footer Berhenti */
-        .footer-nav { padding: 15px; text-align: center; border-top: 1px solid rgba(0,0,0,0.05); }
-        .btn-stop { color: #64748b; text-decoration: none; font-weight: bold; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px; }
-
-        /* Hasil Akhir */
-        #result-view h1 { font-size: 90px; color: #38b6ff; font-weight: 900; margin: 10px 0; }
+        /* HASIL AKHIR */
+        #result-view { display: none; text-align: center; padding: 60px 20px; }
+        .score { font-size: 4rem; font-weight: 800; color: #0077b6; }
+        .final-back-btn {
+            background: #0077b6; color: white; border: none; padding: 14px 40px;
+            border-radius: 20px; font-weight: 600; cursor: pointer; width: 100%;
+            font-family: 'Poppins'; text-decoration: none; display: block; box-sizing: border-box;
+            box-shadow: 0 4px 10px rgba(0, 119, 182, 0.2);
+        }
     </style>
 </head>
 <body>
 
-<div class="phone-screen">
-    <div id="quiz-header" class="header">
-        <h3 style="margin: 0;" id="header-title"><i class="fas fa-tasks"></i> Kuis TKJ</h3>
-    </div>
-
-    <div id="main-content">
-        <!-- Tampilan Soal -->
+    <div class="phone-screen">
         <div id="quiz-view">
-            <p id="q-number" style="color: #38b6ff; font-weight: bold; margin-bottom: 5px;">Soal 1/5</p>
-            <h2 id="q-text" style="color: #1e293b; font-weight: 800; margin-bottom: 30px; line-height: 1.3; font-size: 1.4rem;"></h2>
-            <div id="options-list"></div>
+            <div class="header"><h3 id="lvl-label">LEVEL 01</h3></div>
+            <div class="content">
+                <div class="progress" id="progress">PERTANYAAN 1 / 5</div>
+                <div class="question" id="question">Memuat soal...</div>
+                <div class="options-container" id="options"></div>
+            </div>
         </div>
 
-        <!-- Feedback Layar -->
-        <div id="feedback-view" style="display: none; text-align: center; margin-top: 60px;">
-            <div id="feedback-icon" style="font-size: 100px; margin-bottom: 20px;"></div>
-            <h2 id="feedback-msg" style="font-weight: 800; margin-bottom: 30px;"></h2>
-            <button class="btn-blue" onclick="nextQuestion()">Lanjut Ke Soal Berikutnya</button>
+        <div id="feedback-overlay">
+            <div class="feedback-card">
+                <div id="f-icon" class="feedback-icon"></div>
+                <div id="f-status" class="feedback-status"></div>
+                <div id="f-info" class="correct-info"></div>
+                
+                <button class="next-btn" onclick="nextQuestion()">LANJUT</button>
+                
+                <a href="pilih-level.html" class="back-overlay-btn"><i class="fas fa-arrow-left"></i> Kembali Ke Pilih Level</a>
+            </div>
         </div>
 
-        <!-- Hasil Akhir (Piala) -->
-        <div id="result-view" style="display: none; text-align: center; margin-top: 40px;">
-            <div style="font-size: 100px; margin-bottom: 10px;">🏆</div>
-            <h2 style="color: #1e293b; font-weight: 800;">Kuis Selesai!</h2>
-            <p style="color: #64748b;">Selamat! Kamu meraih skor:</p>
-            <h1 id="final-score">0</h1>
-            
-            <button class="btn-blue" onclick="location.reload()" style="margin-bottom: 15px;">
-                <i class="fas fa-redo"></i> Coba Lagi
-            </button>
-            <a href="index.html" style="color: #94a3b8; text-decoration: none; font-weight: bold; display: block;">Kembali ke Menu Utama</a>
+        <div id="result-view" class="content" style="justify-content: center; align-items: center; display: none;">
+            <div style="text-align: center; width: 100%;">
+                <i class="fas fa-award" style="font-size: 4.5rem; color: #fbbf24; margin-bottom: 10px;"></i>
+                <h2 style="color: #1e293b; margin: 5px 0;">HASIL AKHIR</h2>
+                <div class="score" id="final-score">0</div>
+                <p style="color: #64748b; margin-bottom: 35px;">Misi Selesai!</p>
+                <a href="pilih-level.html" class="final-back-btn">SELESAI</a>
+            </div>
         </div>
     </div>
 
-    <div class="footer-nav" id="footer-nav">
-        <a href="index.html" class="btn-stop">
-            <i class="fas fa-home"></i> Berhenti Kuis
-        </a>
-    </div>
-</div>
+    <audio id="snd-cling" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3"></audio>
+    <audio id="snd-tetot" src="https://assets.mixkit.co/active_storage/sfx/2955/2955-preview.mp3"></audio>
+    <audio id="snd-applause" src="https://cdn.pixabay.com/audio/2021/08/04/audio_12b0c7443c.mp3"></audio>
 
-<!-- Bagian ini harus ada di atas tag script -->
-<audio id="snd-correct" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"></audio>
-<audio id="snd-wrong" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
-<audio id="snd-applause" src="https://www.soundjay.com/human/applause-01.mp3"></audio>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const level = parseInt(urlParams.get('level')) || 1;
+        document.getElementById('lvl-label').innerText = "LEVEL 0" + level;
 
-<script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const level = urlParams.get('level') || "1";
+        const allQuestions = [
+            // LEVEL 1
+            { level: 1, q: "Apa kepanjangan dari TKJ?", a: "Teknik Komputer Jaringan", options: ["Teknik Komputer Jaringan", "Teknologi Komputer Komunikasi", "Teknik Komparasi Jaringan", "Teknologi Komputasi Jaringan"] },
+            { level: 1, q: "Otak dari sebuah komputer adalah...", a: "CPU", options: ["RAM", "CPU", "Harddisk", "Monitor"] },
+            { level: 1, q: "Perangkat keras untuk mengetik adalah...", a: "Keyboard", options: ["Mouse", "Printer", "Scanner", "Keyboard"] },
+            { level: 1, q: "RAM berfungsi sebagai penyimpanan...", a: "Sementara", options: ["Permanen", "Sementara", "Cadangan", "Luar"] },
+            { level: 1, q: "Contoh Sistem Operasi adalah...", a: "Linux", options: ["Linux", "Chrome", "Microsoft Word", "Photoshop"] },
+            // LEVEL 2
+            { level: 2, q: "Alamat logika pada jaringan disebut...", a: "IP Address", options: ["MAC Address", "IP Address", "Home Address", "DNS"] },
+            { level: 2, q: "Alat penghubung antar jaringan adalah...", a: "Router", options: ["Hub", "Switch", "Router", "Modem"] },
+            { level: 2, q: "Kabel jaringan yang umum digunakan adalah...", a: "UTP", options: ["UTP", "Coaxial", "Listrik", "Telepon"] },
+            { level: 2, q: "Topologi yang berbentuk bintang disebut...", a: "Star", options: ["Bus", "Ring", "Star", "Mesh"] },
+            { level: 2, q: "Kepanjangan LAN adalah...", a: "Local Area Network", options: ["Large Area Network", "Local Area Network", "Link Area Network", "List Area Network"] },
+            // LEVEL 3
+            { level: 3, q: "Layanan pembagi IP otomatis disebut...", a: "DHCP", options: ["DNS", "DHCP", "FTP", "HTTP"] },
+            { level: 3, q: "Layer ke-3 pada OSI Layer adalah...", a: "Network", options: ["Physical", "Data Link", "Network", "Transport"] },
+            { level: 3, q: "Ping digunakan untuk mengecek...", a: "Koneksi", options: ["Koneksi", "Kecepatan", "Keamanan", "Kapasitas"] },
+            { level: 3, q: "VLAN bekerja pada perangkat...", a: "Switch", options: ["Hub", "Switch", "Router", "Repeater"] },
+            { level: 3, q: "Subnet mask default kelas C adalah...", a: "255.255.255.0", options: ["255.0.0.0", "255.255.0.0", "255.255.255.0", "255.255.255.255"] }
+        ];
 
-    const questions = {
-        "1": [
-            { q: "Apa fungsi utama dari Router?", o: ["Menghubungkan jaringan", "Mencetak dokumen", "Menyimpan foto", "Menampilkan gambar"], c: 0 },
-            { q: "Perangkat untuk menghubungkan komputer dalam LAN?", o: ["Mouse", "Switch/Hub", "Printer", "Monitor"], c: 1 },
-            { q: "Kabel standar untuk jaringan LAN?", o: ["UTP", "Listrik", "Telepon", "Antena"], c: 0 },
-            { q: "Urutan kabel straight diawali warna?", o: ["Coklat", "Biru", "Putih Orange", "Hijau"], c: 2 },
-            { q: "IP Address 192.168.1.1 masuk kelas?", o: ["Kelas A", "Kelas B", "Kelas C", "Kelas D"], c: 2 }
-        ],
-        "2": [
-            { q: "Berapa jumlah host tersedia pada subnet /24?", o: ["254", "256", "128", "512"], c: 0 },
-            { q: "Protokol yang memberikan IP otomatis adalah?", o: ["DNS", "DHCP", "HTTP", "FTP"], c: 1 },
-            { q: "Lapisan ke-3 pada OSI Layer adalah?", o: ["Physical", "Data Link", "Network", "Transport"], c: 2 },
-            { q: "Alat untuk memotong dan menjepit kabel UTP?", o: ["Tang Kombinasi", "Tang Crimping", "Gunting", "Cutter"], c: 1 },
-            { q: "Satuan kecepatan internet adalah?", o: ["Meter", "Kbps/Mbps", "Kilogram", "Hertz"], c: 1 },
-            { q: "Port default untuk HTTP adalah?", o: ["21", "443", "80", "22"], c: 2 },
-            { q: "Perintah cek koneksi di CMD adalah?", o: ["Cek", "Ping", "Ipconfig", "Dir"], c: 1 },
-            { q: "Topologi yang memerlukan Hub di tengahnya?", o: ["Bus", "Ring", "Star", "Mesh"], c: 2 },
-            { q: "Alamat fisik sebuah NIC disebut?", o: ["IP Address", "MAC Address", "Home Address", "URL"], c: 1 },
-            { q: "Kabel Fiber Optic menggunakan media?", o: ["Tembaga", "Udara", "Cahaya", "Listrik"], c: 2 }
-        ]
-    };
+        const quizQuestions = allQuestions.filter(x => x.level === level);
+        let curIdx = 0; let score = 0;
 
-    let quizData = questions[level];
-    let current = 0;
-    let score = 0;
-
-    function loadQuestion() {
-        document.getElementById('quiz-view').style.display = "block";
-        document.getElementById('feedback-view').style.display = "none";
-        document.getElementById('footer-nav').style.display = "block";
-        const data = quizData[current];
-        document.getElementById('q-number').innerText = `Soal ${current + 1}/${quizData.length}`;
-        document.getElementById('q-text').innerText = data.q;
-        const list = document.getElementById('options-list');
-        list.innerHTML = "";
-        data.o.forEach((opt, i) => {
-            const div = document.createElement('div');
-            div.className = "option-card";
-            div.innerHTML = `<strong>${String.fromCharCode(65 + i)}.</strong> ${opt}`;
-            div.onclick = () => check(i);
-            list.appendChild(div);
-        });
-    }
-
-    function check(idx) {
-        const isCorrect = idx === quizData[current].c;
-        document.getElementById('quiz-view').style.display = "none";
-        document.getElementById('feedback-view').style.display = "block";
-        if(isCorrect) {
-            score += (level === "2" ? 10 : 20);
-            document.getElementById('feedback-icon').innerHTML = "✅";
-            document.getElementById('feedback-icon').style.color = "#22c55e";
-            document.getElementById('feedback-msg').innerText = "Jawabanmu Benar!";
-            document.getElementById('feedback-msg').style.color = "#22c55e";
-            document.getElementById('snd-correct').play();
-        } else {
-            document.getElementById('feedback-icon').innerHTML = "❌";
-            document.getElementById('feedback-icon').style.color = "#ef4444";
-            document.getElementById('feedback-msg').innerText = "Waduh, Salah!";
-            document.getElementById('feedback-msg').style.color = "#ef4444";
-            document.getElementById('snd-wrong').play();
+        function loadQuestion() {
+            const qData = quizQuestions[curIdx];
+            document.getElementById("progress").innerText = `PERTANYAAN ${curIdx + 1} / 5`;
+            document.getElementById("question").innerText = qData.q;
+            const optCont = document.getElementById("options");
+            optCont.innerHTML = "";
+            qData.options.forEach(opt => {
+                const btn = document.createElement("button");
+                btn.innerText = opt;
+                btn.className = "option-btn";
+                btn.onclick = () => checkAnswer(opt, qData.a);
+                optCont.appendChild(btn);
+            });
         }
-    }
 
-    function nextQuestion() {
-        current++;
-        if(current < quizData.length) loadQuestion();
-        else showResult();
-    }
+        function checkAnswer(chosen, correct) {
+            const overlay = document.getElementById("feedback-overlay");
+            const icon = document.getElementById("f-icon");
+            const status = document.getElementById("f-status");
+            const info = document.getElementById("f-info");
 
-    function showResult() {
-        document.getElementById('feedback-view').style.display = "none";
-        document.getElementById('footer-nav').style.display = "none";
-        document.getElementById('result-view').style.display = "block";
-        document.getElementById('final-score').innerText = score;
-        document.getElementById('header-title').innerHTML = '<i class="fas fa-trophy"></i> Hasil Akhir';
-        
-        // Memainkan suara tepuk tangan
-        const clap = document.getElementById('snd-applause');
-        clap.volume = 1.0;
-        clap.currentTime = 0;
-        clap.play().catch(e => console.log("Audio play failed:", e));
-    }
+            overlay.style.display = "flex";
 
-    loadQuestion();
-</script>
+            if (chosen === correct) {
+                score += 20;
+                document.getElementById("snd-cling").play();
+                overlay.style.backgroundColor = "rgba(34, 197, 94, 0.85)"; 
+                icon.innerHTML = '<i class="fas fa-check-circle" style="color: #22c55e;"></i>';
+                status.innerText = "BENAR!";
+                status.style.color = "#22c55e";
+                info.innerText = "Keren banget! Jawaban kamu tepat.";
+            } else {
+                document.getElementById("snd-tetot").play();
+                overlay.style.backgroundColor = "rgba(239, 68, 68, 0.85)"; 
+                icon.innerHTML = '<i class="fas fa-times-circle" style="color: #ef4444;"></i>';
+                status.innerText = "SALAH!";
+                status.style.color = "#ef4444";
+                info.innerHTML = `Jawaban benar: <br><b style="color:#1e293b;">${correct}</b>`;
+            }
+        }
+
+        function nextQuestion() {
+            document.getElementById("feedback-overlay").style.display = "none";
+            curIdx++;
+            if (curIdx < quizQuestions.length) { loadQuestion(); } 
+            else { showResult(); }
+        }
+
+        function showResult() {
+            document.getElementById("quiz-view").style.display = "none";
+            document.getElementById("result-view").style.display = "flex";
+            document.getElementById("final-score").innerText = score;
+            document.getElementById("snd-applause").play();
+        }
+
+        window.onload = loadQuestion;
+    </script>
 </body>
 </html>
