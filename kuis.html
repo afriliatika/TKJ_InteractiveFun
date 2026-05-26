@@ -15,10 +15,20 @@
         }
 
         .phone-screen {
-            width: 360px; height: 740px; border: 8px solid #334155;
-            border-radius: 40px; background-color: #ffffff;
-            display: flex; flex-direction: column; overflow: hidden; position: relative;
-        }
+        width: 100%;
+        max-width: 412px;   /* Menjaga tampilan tetap rapi di laptop/PC */
+        min-height: 100vh;  /* Membuat tinggi halaman otomatis pas & penuh di HP beneran */
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        box-sizing: border-box;
+        background-color: #ffffff; /* Sesuai warna latar belakang halaman video kamu */
+        
+        /* INI KUNCI UTAMANYA UNTUK MENGHILANGKAN CASING HP */
+        border: none;        /* Menghapus garis hitam tebal bingkai HP */
+        border-radius: 0;   /* Menghapus lengkungan sudut HP */
+        box-shadow: none;   /* Menghapus bayangan bingkai */
+    }
 
         /* HEADER */
         .header { background-color: #0077b6; padding: 40px 20px 20px; text-align: center; color: white; }
