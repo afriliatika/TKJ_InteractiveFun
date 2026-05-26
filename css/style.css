@@ -11,17 +11,20 @@ body {
     min-height: 100vh;
 }
 
+/* CARI .phone-screen DI KODE ASLI KAMU, LALU GANTI MENJADI INI: */
 .phone-screen {
-    width: 360px;
-    height: 740px;
-    background-color: #dcf1ff; /* Biru muda cerah sesuai Canva */
-    border: 10px solid #ffffff;
-    border-radius: 40px;
-    position: relative;
-    overflow-y: auto;
+    width: 100%;
+    max-width: 412px;   /* Biar kalau dibuka di laptop tetap rapi di tengah */
+    min-height: 100vh;  /* Biar otomatis pas penuh di layar HP merk apa saja */
     display: flex;
     flex-direction: column;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    position: relative;
+    box-sizing: border-box;
+    
+    /* INI DIA KUNCINYA UNTUK MENGHAPUS BENTUK HP HITAM: */
+    border: none;        /* Menghapus garis hitam tebal casing */
+    border-radius: 0;   /* Menghapus lengkungan sudut */
+    box-shadow: none;   /* Menghapus bayangan bingkai HP */
 }
 
 /* Header Biru Cerah */
