@@ -6,25 +6,20 @@
     <title>Welcome - Pengenalan TKJ</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .phone-screen {
-            width: 360px;
-            height: 740px;
-            border: 12px solid #000;
-            border-radius: 45px;
-            margin: 20px auto;
-            background: radial-gradient(circle, #001d3d 0%, #000814 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            position: relative;
-            box-sizing: border-box;
-            color: white;
-            font-family: 'Poppins', sans-serif;
-            text-align: center;
-            cursor: pointer;
-        }
+    .phone-screen {
+    width: 100%;
+    max-width: 412px;   /* Biar kalau dibuka di laptop tetap rapi di tengah */
+    min-height: 100vh;  /* Biar otomatis pas penuh di layar HP merk apa saja */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-sizing: border-box;
+    
+    /* INI DIA KUNCINYA UNTUK MENGHAPUS BENTUK HP HITAM: */
+    border: none;        /* Menghapus garis hitam tebal casing */
+    border-radius: 0;   /* Menghapus lengkungan sudut */
+    box-shadow: none;   /* Menghapus bayangan bingkai HP */
+}
 
         /* Dekorasi Background */
         .circuit-bg {
